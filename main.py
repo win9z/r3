@@ -10,7 +10,7 @@ class MWindow(QMainWindow):
 
     def __init__(self):
         super(MWindow, self).__init__()
-        uic.loadUi("untitled.ui", self)
+        uic.loadUi("main.ui", self)
 
         self.db = sqlite3.connect("coffee.sqlite")
         self.loadFromDB()
