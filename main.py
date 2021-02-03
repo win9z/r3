@@ -15,19 +15,6 @@ class MWindow(QMainWindow):
         self.db = sqlite3.connect("coffee.sqlite")
         self.loadFromDB()
     
-    def delete(self):
-        r = self.tableWidgetcurrentRow()
-        if r == -1:
-            QMessageBox.warning(self, "Внимание", "Не выбран кофе для удаления")
-            return
-        
-        ii = int(self.tableWidgetitem(r, 0).text())
-        n = self.tableWidgetitem(r, 1).text()
-        r = QMessageBox.question(self, "Вы уверены?", f"Удалить кофе {n}?", QMessageBox.Yes, QMessageBox.No)
-        if r == QMessageBox.Yes:
-            self.db.cursor().execute(f"DELETE from coffee WHERE id = {ii}")
-            self.loadFromDB()
-    
     def loadFromDB(self):
         query = "SELECT * FROM coffee ORDER BY id ASC"
         res = self.db.cursor().execute(query).fetchall()
