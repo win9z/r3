@@ -42,6 +42,8 @@ class MWindow(QMainWindow):
             for j, elem in enumerate(row):
                 if j == 3:
                     elem = "Молотый" if elem == "TRUE" else "Зерновой"
+                if elem is None:
+                    elem = " "
                 self.tableWidget.setItem(i, j, QTableWidgetItem(str(elem)))
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
     
