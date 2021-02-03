@@ -1,18 +1,19 @@
 import datetime
 import sqlite3
 import sys
+from mainui import Ui_MainWindow
+from addEditCoffeeForm import Ui_Dialog
 
-from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QDialog, QApplication, QTableWidgetItem, QHeaderView, QMessageBox
 
 
-class MWindow(QMainWindow):
+class MWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         super(MWindow, self).__init__()
-        uic.loadUi("main.ui", self)
+        self.setupUi(self)
 
-        self.db = sqlite3.connect("coffee.sqlite")
+        self.db = sqlite3.connect("data/coffee.sqlite")
         self.loadFromDB()
         self.pushButton_3.clicked.connect(self.add)
         self.pushButton_2.clicked.connect(self.edit)
@@ -68,11 +69,11 @@ class MWindow(QMainWindow):
         self.db.close()
 
 
-class MultiWindow(QDialog):
+class MultiWindow(QDialog, Ui_Dialog):
     
     def __init__(self, main, text, row=-1, dbid=-1):
         super(MultiWindow, self).__init__()
-        uic.loadUi("addEditCoffeeForm.ui", self)
+        self.setupUi(self)
         self.mainwindow = main
         self.setWindowTitle(f"{text} кофе")
         
@@ -88,7 +89,6 @@ class MultiWindow(QDialog):
         p = "name, roast, milled, description, price, pack_size".split(", ")
         v = [getattr(self, f"lineEdit_{i + 1}").text() if i != 2 else 0 for i in range(6)]
         v[2] = str(self.radioButton.isChecked()).upper()
-        print(v)
         cur = self.mainwindow.db.cursor()
         if self.dbid == -1:
             i = cur.execute("SELECT id FROM coffee ORDER BY id DESC LIMIT 1").fetchone()[0] + 1
